@@ -4,98 +4,25 @@
 #include<vector>
 #include<bits/stdc++.h>
 
-#include "english_stem.h"  
-
-
 using namespace std;
 
-/*bool is_in_array(const wstring &value, const vector<wstring> &array)
-{
-    return find(array.begin(), array.end(), value) != array.end();
-};*/
-
-void makeSmaller(string &word){
-
-	for(int i=0;i<word.length();i++)
-		{
-			if(word[i]>='A' && word[i]<='Z'){
-
-				word[i] = word[i]+32;
+void makeSmaller(string &s){
+	int i=0;
+	while(i!=s.length()){
+		if(s[i]>='A' && s[i]<='Z'){
+            s[i] = s[i]+32;
 		}
+		else if(s[i]<'A' || (s[i]>'Z' && s[i]<'a') || s[i]>'z'){
+			s[i]=' ';
 
+		}
+		i++;
 	}
 }
 
-void printFrequency(string &str, char array[10000][10000], char array2[10000][10000])
-		{
-			c,coun ,j,k = 0;
-
-			int countSpace = 0;
-
-			for(int i=0;str[i]!='\0';i++){
-
-				if(str[i]==' '){
-
-				    countSpace++;
-			}
-		}
-		 //printf("Total spaces in st are %d\n", countSpace);
-
-
-		 for(int i =0; i <= countSpace; i++)
-		 {
-
-		 while(j<=countSpace)
-		 {
-			if(i==j)
-			{
-				strcpy(array2[k],array[i]);
-
-				k++;
-
-				coun++;
-
-				break;
-			}
-			else{
-				    if (strcmp(array2[j],array[i]) !=0)
-				    {
-				    j++;
-
-				    continue;
-
-				    }
-				else
-
-				    break;
-			}
-		}
-		 }
-		 for(int i = 0; i < coun-1 ; i++)
-		 {
-			 j =0;
-
-			 while(j <= countSpace)
-		 {
-			 if(strcmp(array2[i],array[j])==0)
-
-
-			 c++;
-
-			 j++;
-
-		 }
-
-		cout << array2[i] << " --> "<< c << "time(s)" << endl;
-		c=0;
-
-		 }
-		 cout<<endl;
-		}
-
-
 int main(void)
 {
+	map<string,int> frequincy;
 	vector<string> stopWordList;
 	ifstream iFile;
 	iFile.open("stopWord.txt");
@@ -107,6 +34,7 @@ int main(void)
 		while(iLine>>word){
 
 			stopWordList.push_back(word);
+			//cout<<"stop word: "<<word<<endl;
 
 
 		}
@@ -152,24 +80,15 @@ int main(void)
 		}
 	}
 
-	/*for(it = tokenization.begin(); it!=tokenization.end(); it++){
-		cout << *it << endl;
-	}*/
-	
-	
-	stemming::english_stem<> stemObj; //creating an object of english_stem class
-    int i;
-    for(i=0; i<it.size(); i++){
-            theWord = it[i];
-            wcout<<"Original word was:\t"<<theWord.c_str()<<endl; //wcout is used to print wstring. c_str() is used to convert wstring to normal "c++" string
-            stemObj(theWord); //this method is stemming theWord variable and putting the stemmed word into it
-            wcout<<"Stemmed word is:\t"<<theWord.c_str()<<endl<<endl; //converting the stemmed word into normal string and printing
-        }
-        
-        
-    printFrequency(str,array,array2);
-         
-         
-    return 0;
+	cout<<"All the words we have: "<<endl<<endl;
+	for(it = tokenization.begin(); it!=tokenization.end(); it++){
+		frequincy[*it]++;
+	}
+
+	for(map<string,int>::iterator iter=frequincy.begin();iter!=frequincy.end();iter++){
+		cout<<iter->first<<" --> "<<iter->second<<endl;
+	}
+
+
 
 }
