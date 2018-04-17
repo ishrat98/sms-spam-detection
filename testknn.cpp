@@ -13,7 +13,7 @@ int K;
 #define columnSize 23
 
 struct data{
-    double col[cc];
+    int col[cc];
 
 };
 /*void printDouble(double d){
@@ -142,7 +142,7 @@ int main(){
 
     }
     cout << "Total Test Data: " << v1.size() << endl;
-    cout << "Total Correct : " << correct << endl;
+    cout << "Total Correct result : " << correct << endl;
 
 
 }
