@@ -1,8 +1,9 @@
 #include <bits/stdc++.h>
 
+
 using namespace std;
 
-typedef long long LL;
+
 
 
 const int cc = 30;
@@ -136,7 +137,7 @@ int main(){
         if(result == (int)d.col[N - 1])correct++;
         cout << " Decision Result : " << result << endl;
         cout << "Actual Answer: " << d.col[N - 1] << endl;
-        cout << "-----------------------------------\n";
+        cout << "\n";
         if(classes == 2)res[result][(int) d.col[N - 1]]++;
 
     }
