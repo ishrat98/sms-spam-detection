@@ -16,9 +16,7 @@ struct data{
     int col[cc];
 
 };
-/*void printDouble(double d){
-    cout << fixed << setprecision(6) << d << endl;
-}*/
+
 
 vector <data> v, v1;
 
@@ -65,7 +63,7 @@ void readFile(){
         trainData += cnt[it -> first];
     }
 
-    cout << "Total Size: " << v1.size() << endl;
+    //cout << "Total Size: " << v1.size() << endl;
 
     while(true){
         if(!trainData)break;
@@ -123,10 +121,11 @@ int main(){
 
     cout << "Enter the value of K?"<< "\n";
     cin >> K;
+    cout << endl ;
 
 
 
-    cout << "Number of training data:" << v.size() << endl;
+    cout << "Number of training data:" << v.size() << endl << endl;
 
     int correct = 0;
     for(int i = 0; i < v1.size(); i++){
@@ -136,6 +135,7 @@ int main(){
         int result = KNN(d);
         if(result == (int)d.col[N - 1])correct++;
         cout << " Decision Result : " << result << endl;
+        // "1 is for ham sms and 0 is for spam sms"<< endl;
         cout << "Actual Answer: " << d.col[N - 1] << endl;
         cout << "\n";
         if(classes == 2)res[result][(int) d.col[N - 1]]++;
