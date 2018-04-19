@@ -1,10 +1,8 @@
 #include <bits/stdc++.h>
-
+#include<iostream>
+#include<map>
 
 using namespace std;
-
-
-
 
 const int cc = 30;
 int N;
@@ -76,6 +74,7 @@ void readFile(){
             trainData--;
         }
     }
+   // cout << v1.size();
 
 
 }
@@ -117,7 +116,7 @@ int KNN(data d){
 }
 int res[2][2];
 int main(){
-    readFile();
+
 
     cout << "Enter the value of K?"<< "\n";
     cin >> K;
@@ -125,24 +124,52 @@ int main(){
 
 
 
-    cout << "Number of training data:" << v.size() << endl << endl;
+   // cout << "Number of training data:" << v.size() << endl << endl;
 
-    int correct = 0;
-    for(int i = 0; i < v1.size(); i++){
-        data d;
-        d = v1[i];
-        cout << "Test Data No : " << i + 1 << "\n";
-        int result = KNN(d);
-        if(result == (int)d.col[N - 1])correct++;
-        cout << " Decision Result : " << result << endl;
-        // "1 is for ham sms and 0 is for spam sms"<< endl;
-        cout << "Actual Answer: " << d.col[N - 1] << endl;
-        cout << "\n";
-        if(classes == 2)res[result][(int) d.col[N - 1]]++;
 
-    }
+    double accuracy=0.0;
+
+    double averageAccuracy=0.0;
+
+    double sum=0.0;
+
+    for(int j=0;j<10;j++)
+    {
+        int correct = 0;
+        readFile();
+
+        for(int i = 0; i < v1.size(); i++){
+            data d;
+            d = v1[i];
+           // cout << "Test Data No : " << i + 1 << "\n";
+            int result = KNN(d);
+            if(result == (int)d.col[N - 1])correct++;
+           // cout << " Decision Result : " << result << endl;
+
+            // "1 is for ham sms and 0 is for spam sms"<< endl;
+           // cout << "Actual Answer: " << d.col[N - 1] << endl;
+           // cout << "\n";
+            if(classes == 2)res[result][(int) d.col[N - 1]]++;
+
+        }
     cout << "Total Test Data: " << v1.size() << endl;
     cout << "Total Correct result : " << correct << endl;
+    //cout << v1.size()<< endl;
+        accuracy = ((double)(correct)/(double)v1.size());
+        cout << "Accuracy for testing " << j+1 << "=" << accuracy<< endl;
+
+        sum=sum+accuracy;
+
+        // myvector.erase (myvector.begin(),myvector.begin()+3);
+         v1.erase(v1.begin(),v1.begin()+v1.size());
+
+    }
+
+    cout << sum <<endl;
+
+    averageAccuracy=(sum)/10.0;
+    cout << "Average ACCuracy is :" << averageAccuracy << endl;
+
 
 
 }
