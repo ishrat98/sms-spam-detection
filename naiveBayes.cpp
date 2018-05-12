@@ -7,17 +7,11 @@
 using namespace std;
 
 void makeSmaller(string &s){
-	int i=0;
-	while(i!=s.length()){
-		if(s[i]>='A' && s[i]<='Z'){
-            s[i] = s[i]+32;
-		}
-		else if(s[i]<'A' || (s[i]>'Z' && s[i]<'a') || s[i]>'z'){
-			s[i]=' ';
-
-		}
-		i++;
-	}
+	 for(int i = 0; i < s.size(); i++){
+        if(s[i] >= 65 and s[i] <= 91)s[i] += 32;
+        else if(s[i] >= 97 and s[i] <= 122){}
+        else s[i] = ' ';
+    }
 }
 
 int main(void)
@@ -146,20 +140,59 @@ int main(void)
 
 	}
 */
+	int correctAnswer=0;
+	int res[2][2];
+	memset(res,0,sizeof(res));
+	//cout<<testList.size()<<endl;
     for(int i=0;i<testList.size();i++)
     {
         string actualClass = testList[i][0];
+
         double hamProbability=1.0;
         double spamProbability=1.0;
         for(int j=0;j<testList[i].size();j++)
         {
             if(uniqueWords.find(testList[i][j])==uniqueWords.end()) continue;
-            hamProbability*= hamWordProbability[testList[i][j]];
-            spamProbability*= spamWordProbability[testList[i][j]];
+            hamProbability+= hamWordProbability[testList[i][j]];
+            spamProbability+= spamWordProbability[testList[i][j]];
         }
-        if(hamProbability>spamProbability) cout<<"ham"<<endl;
-        else cout<<"spam"<<endl;
+        //if(hamProbability>spamProbability) cout<<"ham"<<endl;
+        //else cout<<"spam"<<endl;
+        if(spamProbability * 1.0 / hamProbability * 1.0 < .85){
+            cout << "Tested result : Ham\n";
+            if(actualClass=="ham")
+            {
+            	cout << "Actual Result : Ham\n";
+            	res[1][1]++;
+            	correctAnswer++;
+            }
+            else
+            {
+            	cout << "Actual Result : Spam\n";
+            	res[1][0]++;
+            }
+
+        }
+        else{
+            cout << "Tested result : Spam\n";
+            if(actualClass=="spam")
+            {
+            	cout << "Actual result : Spam\n";
+            	res[0][0]++;
+            	correctAnswer++;
+            }
+            else
+            {
+            	cout << "Actual result : Ham\n";
+            	res[0][1]++;
+            }
+        }
+        cout << "\n";
     }
+    cout << "Total Test Cases: " << testList.size() << endl;
+    cout << "Total Correct Decisions: " << correctAnswer << endl;
+
+
 
 	return 0;
 }
