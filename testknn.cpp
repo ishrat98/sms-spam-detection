@@ -6,7 +6,7 @@ using namespace std;
 
 const int cc = 30;
 int N;
-int K;
+int K=5;
 
 #define columnSize 23
 
@@ -118,9 +118,9 @@ int res[2][2];
 int main(){
 
 
-    cout << "Enter the value of K?"<< "\n";
-    cin >> K;
-    cout << endl ;
+    //cout << "Enter the value of K?"<< "\n";
+    //cin >> K;
+    //cout << endl ;
 
 
 
@@ -152,11 +152,11 @@ int main(){
             if(classes == 2)res[result][(int) d.col[N - 1]]++;
 
         }
-    cout << "Total Test Data: " << v1.size() << endl;
-    cout << "Total Correct result : " << correct << endl;
+    //cout << "Total Test Data: " << v1.size() << endl;
+    //cout << "Total Correct result : " << correct << endl;
     //cout << v1.size()<< endl;
         accuracy = ((double)(correct)/(double)v1.size());
-        cout << "Accuracy for testing " << j+1 << "=" << accuracy<< endl;
+        //cout << "Accuracy for testing " << j+1 << "=" << accuracy<< endl;
 
         sum=sum+accuracy;
 
@@ -165,10 +165,10 @@ int main(){
 
     }
 
-    cout << sum <<endl;
+    //cout << sum <<endl;
 
     averageAccuracy=(sum)/10.0;
-    cout << "Average ACCuracy is :" << averageAccuracy << endl;
+    cout << "Average Accuracy is :" << averageAccuracy*100 <<"%" << endl;
 
 
 
