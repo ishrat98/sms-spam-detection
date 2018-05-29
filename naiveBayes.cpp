@@ -159,39 +159,41 @@ int main(void)
         //if(hamProbability>spamProbability) cout<<"ham"<<endl;
         //else cout<<"spam"<<endl;
         if(spamProbability * 1.0 / hamProbability * 1.0 < .85){
-            cout << "Tested result : Ham\n";
+            //cout << "Tested result : Ham\n";
             if(actualClass=="ham")
             {
-            	cout << "Actual Result : Ham\n";
+            	//cout << "Actual Result : Ham\n";
             	res[1][1]++;
             	correctAnswer++;
             }
             else
             {
-            	cout << "Actual Result : Spam\n";
+            	//cout << "Actual Result : Spam\n";
             	res[1][0]++;
             }
 
         }
         else{
-            cout << "Tested result : Spam\n";
+           // cout << "Tested result : Spam\n";
             if(actualClass=="spam")
             {
-            	cout << "Actual result : Spam\n";
+            	//cout << "Actual result : Spam\n";
             	res[0][0]++;
             	correctAnswer++;
             }
             else
             {
-            	cout << "Actual result : Ham\n";
+            	//cout << "Actual result : Ham\n";
             	res[0][1]++;
             }
         }
-        cout << "\n";
+       // cout << "\n";
     }
-    cout << "Total Test Cases: " << testList.size() << endl;
-    cout << "Total Correct Decisions: " << correctAnswer << endl;
-
+   // cout << "Total Test Cases: " << testList.size() << endl;
+    //cout << "Total Correct Decisions: " << correctAnswer << endl;
+    double accuracy= (double) (correctAnswer)/(double)testList.size();
+    
+    cout << "Accuracy is: " << accuracy * 100<<"%" << endl;
 
 
 	return 0;
