@@ -1,29 +1,32 @@
-#include <bits/stdc++.h>
 #include<iostream>
-#include<map>
+#include<sstream>
+#include<fstream>
+#include<vector>
+#include<bits/stdc++.h>
 
 using namespace std;
 
-const int cc = 30;
+const int h = 30;
 int N;
 int K=5;
 
 #define columnSize 23
 
 struct data{
-    int col[cc];
+    int col[h];
 
 };
 
 
-vector <data> v, v1;
+vector <data> sp, ns;
 
 void clearString(string &s){
     for(int i = 0; i < s.size(); i++){
         if(s[i] == ',')s[i] = ' ';
     }
 }
-int classes;
+
+int classifier;
 
 void readFile(){
 
@@ -34,43 +37,50 @@ void readFile(){
 
     N = 1;
 
-    map <int, int> deci, cnt;
+    map <int, int> spam, ham;
 
     while(getline(f, s)){
+
         clearString(s);
+
         istringstream iss(s);
-        int cnt = 0;
+
+        int ham = 0;
+
         double d;
+
         data dd;
         while(iss >> d){
 
-            dd.col[cnt++] = d;
+            dd.col[ham++] = d;
 
         }
-        deci[ (int)dd.col[N - 1]]++;
+        spam[ (int)dd.col[N - 1]]++;
 
-        v1.push_back(dd);
+        ns.push_back(dd);
     }
     int trainData = 0;
-    classes = deci.size();
+    classifier = spam.size();
 
-    for( map<int,int>::iterator it = deci.begin(); it != deci.end(); it++){
-        cnt[it -> first] = it -> second * 9;
-        cnt[it -> first] /= 10;
+    for( map<int,int>::iterator it = spam.begin(); it != spam.end(); it++){
+        ham[it -> first] = it -> second * 9;
+        ham[it -> first] /= 10;
 
-        trainData += cnt[it -> first];
+        trainData += ham[it -> first];
     }
 
     //cout << "Total Size: " << v1.size() << endl;
 
     while(true){
         if(!trainData)break;
-        int val = rand() % v1.size();
+        int val = rand() % ns.size();
 
-        if(cnt[(int)v1[val].col[N - 1]]){
-            v.push_back(v1[val]);
-            cnt[(int)v1[val].col[N - 1]]--;
-            v1.erase(v1.begin() + val);
+        if(ham[(int)ns[val].col[N - 1]]){
+            sp.push_back(ns[val]);
+
+            ham[(int)ns[val].col[N - 1]]--;
+
+            ns.erase(ns.begin() + val);
             trainData--;
         }
     }
@@ -79,33 +89,35 @@ void readFile(){
 
 }
 
-double dist(data d1, data d2){
-    double d = 0.0;
+double distan(data a, data b){
+    double dis = 0.0;
     for(int j = 0; j < columnSize; j++){
-        d += (d1.col[j] - d2.col[j]) * (d1.col[j] - d2.col[j]) * 1.0;
+        dis += (a.col[j] - b.col[j]) * (a.col[j] - b.col[j]) * 1.0;
     }
-    return d;
+    return dis;
 }
 
 int KNN(data d){
+
     priority_queue <pair <double, int> , vector < pair <double, int> >, greater < pair <double, int> > > pq;
-    for(int i = 0; i < v.size(); i++){
-        pq.push({dist(d, v[i]), i});
+
+    for(int i = 0; i < sp.size(); i++){
+        pq.push({distan(d, sp[i]), i});
         while(pq.size() > K)pq.pop();
     }
     data dd;
-    map <int, int> cnt;
+    map <int, int> ham;
     int mx = 0, ans = 0;
-    int cc = 0;
+    int h = 0;
     while(!pq.empty()){
-        dd = v[pq.top().second];
+        dd = sp[pq.top().second];
         pq.pop();
 
-        cnt[(int)dd.col[N - 1]]++;
+        ham[(int)dd.col[N - 1]]++;
 
     }
 
-    for( map<int,int>::iterator it = cnt.begin(); it != cnt.end(); it++){
+    for( map<int,int>::iterator it = ham.begin(); it != ham.end(); it++){
         if(mx < it -> second){
             mx = it -> second;
             ans = it -> first;
@@ -114,7 +126,10 @@ int KNN(data d){
     }
     return ans;
 }
+
 int res[2][2];
+
+
 int main(){
 
 
@@ -124,7 +139,7 @@ int main(){
 
 
 
-   // cout << "Number of training data:" << v.size() << endl << endl;
+
 
 
     double accuracy=0.0;
@@ -138,9 +153,9 @@ int main(){
         int correct = 0;
         readFile();
 
-        for(int i = 0; i < v1.size(); i++){
+        for(int i = 0; i < ns.size(); i++){
             data d;
-            d = v1[i];
+            d = ns[i];
            // cout << "Test Data No : " << i + 1 << "\n";
             int result = KNN(d);
             if(result == (int)d.col[N - 1])correct++;
@@ -149,30 +164,30 @@ int main(){
             // "1 is for ham sms and 0 is for spam sms"<< endl;
            // cout << "Actual Answer: " << d.col[N - 1] << endl;
            // cout << "\n";
-            if(classes == 2)res[result][(int) d.col[N - 1]]++;
+            if(classifier == 2)res[result][(int) d.col[N - 1]]++;
 
-        }
-    //cout << "Total Test Data: " << v1.size() << endl;
+
     //cout << "Total Correct result : " << correct << endl;
     //cout << v1.size()<< endl;
-        accuracy = ((double)(correct)/(double)v1.size());
+        accuracy = ((double)(correct)/(double)ns.size());
         //cout << "Accuracy for testing " << j+1 << "=" << accuracy<< endl;
 
         sum=sum+accuracy;
 
         // myvector.erase (myvector.begin(),myvector.begin()+3);
-         v1.erase(v1.begin(),v1.begin()+v1.size());
+         ns.erase(ns.begin(),ns.begin()+ns.size());
 
     }
 
     //cout << sum <<endl;
-
+    }
     averageAccuracy=(sum)/10.0;
     cout << "Average Accuracy is :" << averageAccuracy*100 <<"%" << endl;
 
+    }
 
 
-}
+
 
 
 
